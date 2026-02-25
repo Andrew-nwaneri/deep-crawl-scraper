@@ -39,9 +39,9 @@ class QuotesSpider(scrapy.Spider):
 if __name__ == "__main__":
     process = CrawlerProcess(settings={
         'FEED_FORMAT': 'json',
-        'FEED_URI': 'quotes_final_100.json',
+        'FEED_URI': 'quotes_data.json',
         'LOG_LEVEL': 'INFO',
-        'REQUEST_FINGERPRINTER_IMPLEMENTATION': '2.7', # Best practice for modern Scrapy
+        'FEED_EXPORT_ENCODING': 'utf-8'
     })
 
     process.crawl(QuotesSpider)
