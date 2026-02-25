@@ -1,5 +1,6 @@
 import scrapy
 from scrapy.crawler import CrawlerProcess
+import os
 
 class QuotesSpider(scrapy.Spider):
     name = 'quotes_spider'
@@ -34,12 +35,27 @@ class QuotesSpider(scrapy.Spider):
         yield item
 
 if __name__ == "__main__":
+    directory = "data"
+    if not os.path.exists(directory):
+        os.mkdir(directory)
+
     process = CrawlerProcess(settings={
         'FEED_FORMAT': 'json',
-        'FEED_URI': 'quotes_data.json',
+        'FEEDS': {
+                    'data/quotes.json': {
+                        'format': 'json',
+                        'encoding': 'utf8',
+                        'indent': 4, # This makes the JSON "pretty-printed" and readable
+                    },
+                    'data/quotes.csv': {
+                        'format': 'csv',
+                    },
+                },
         'LOG_LEVEL': 'INFO',
-        'FEED_EXPORT_ENCODING': 'utf-8'
+        'FEED_EXPORT_ENCODING': 'utf-8',
+        'REQUEST_FINGERPRINTER_IMPLEMENTATION': '2.7',
     })
 
     process.crawl(QuotesSpider)
     process.start()
+    print(f"\nSuccess! Data saved to file directory 'data' in json and csv formats")
