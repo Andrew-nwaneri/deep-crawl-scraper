@@ -15,9 +15,6 @@ class QuotesSpider(scrapy.Spider):
 
             author_url = quote.css('span a::attr(href)').get()
             if author_url:
-                # --- THE FIX IS HERE ---
-                # Adding dont_filter=True tells Scrapy to visit the author page
-                # even if it has already visited it for a previous quote.
                 yield response.follow(
                     author_url,
                     self.parse_author,
